@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Generate Commit</h2>
+      <form method="POST">
+        <input
+          type="number"
+          name="jumlah"
+          placeholder="Jumlah Commit"
+          required
+        />
+        <button type="submit">Generate</button>
+      </form>
+      <p style="color: green; font-weight: bold">{{ message }}</p>
+      {% if error_message %}
+      <p style="color: red; font-weight: bold">{{ error_message }}</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
