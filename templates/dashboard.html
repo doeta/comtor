@@ -1,28 +1,106 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COMTOR</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
+      href="{{ url_for('static', filename='style.css') }}?v={{ range(1, 10000) | random }}"
     />
   </head>
   <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Commit Generator</div>
+      <button onclick="stopGeneration()" id="stopButton" class="stop-button">
+        Stop Generation
+      </button>
+
+      <div class="loading-subtext" id="loadingText">Requesting access...</div>
+    </div>
+
     <div class="container">
-      <h2>Generate Commit</h2>
-      <form method="POST">
+      {% if session.username %}
+      <div
+        class="profile-card stagger-1"
+        style="
+          animation: fadeInUp 0.6s ease-out forwards;
+          opacity: 0;
+          margin-bottom: 2rem;
+        "
+      >
+        <img
+          src="{{ session.avatar_url }}"
+          alt="Profile"
+          class="profile-avatar"
+        />
+        <div class="profile-info">
+          <h3>{{ session.name or session.username }}</h3>
+          <p>@{{ session.username }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <h2
+        class="stagger-1"
+        style="animation: fadeInUp 0.6s ease-out forwards; opacity: 0"
+      >
+        Generate Commits
+      </h2>
+      <p
+        class="stagger-2"
+        style="
+          animation: fadeInUp 0.6s ease-out 0.1s forwards;
+          opacity: 0;
+          color: #64748b;
+          margin-bottom: 2rem;
+        "
+      >
+        Enter the number of commits you want to generate.
+      </p>
+
+      <form
+        method="POST"
+        id="commitForm"
+        class="stagger-3"
+        style="animation: fadeInUp 0.6s ease-out 0.2s forwards; opacity: 0"
+      >
         <input
           type="number"
           name="jumlah"
-          placeholder="Jumlah Commit"
+          id="commitInput"
+          placeholder="Number of Commits (e.g. 10)"
           required
+          min="1"
+          max="1000"
         />
-        <button type="submit">Generate</button>
+        <button type="submit" id="generateBtn">Start Sequence</button>
       </form>
-      <p style="color: green; font-weight: bold">{{ message }}</p>
-      {% if error_message %}
-      <p style="color: red; font-weight: bold">{{ error_message }}</p>
+
+      {% if message %}
+      <div
+        class="message-success"
+        style="animation: fadeInUp 0.6s ease-out forwards; margin-top: 1.5rem"
+      >
+        <strong>Success!</strong> {{ message }}
+      </div>
+      {% endif %} {% if error_message %}
+      <div
+        class="message-error"
+        style="animation: fadeInUp 0.6s ease-out forwards; margin-top: 1.5rem"
+      >
+        <strong>Error:</strong> {{ error_message }}
+      </div>
       {% endif %}
     </div>
+
+    <!-- Script JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}?v={{ range(1, 10000) | random }}"></script>
   </body>
 </html>
